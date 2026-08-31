@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
           source: "esp32-firmware/build/Yoefie_Family_Switch.ino.bin"
-          target: "/home/Smart-b6b3/public_html/smart/firmware/"
+          target: "/home/sites/18a/1/1a9a52a59e/public_html/smart/firmware/"
           rename: "Yoefie_Family_Switch_v${{ steps.data.outputs.VERSI }}_id${{ steps.data.outputs.ID_PROYEK }}.bin"
           overwrite: true
 
