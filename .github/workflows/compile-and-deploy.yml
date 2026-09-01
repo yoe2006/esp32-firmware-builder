@@ -31,7 +31,7 @@ jobs:
       - name: 📚 Install Library yang Dibutuhkan
         run: |
           arduino-cli lib install "WiFi"
-          arduino-cli lib install "WebServer"
+          arduino-cli lib install "Arduino WebServer"
           arduino-cli lib install "HTTPClient"
           arduino-cli lib install "ArduinoJson"
           arduino-cli lib install "LiquidCrystal I2C"
@@ -59,4 +59,3 @@ jobs:
         run: |
           echo "✅ Firmware berhasil dikompile & diupload ke hosting!"
           echo "📂 Nama file: Yoefie_Family_Switch_v${{ steps.data.outputs.VERSI }}_id${{ steps.data.outputs.ID_PROYEK }}.bin"
-          
