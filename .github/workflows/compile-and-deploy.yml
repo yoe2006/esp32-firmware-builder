@@ -1,75 +1,18 @@
-name: Kompile & Upload ke Hosting
-
-on:
-  workflow_dispatch:
-    inputs:
-      id_proyek:
-        description: 'ID Proyek'
-        required: true
-        default: '001'
-      versi:
-        description: 'Versi Firmware'
-        required: true
-        default: '1.0.0'
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: Kompile & Upload ke Hosting
-    
-    steps:
-      - name: 🔧 Set up job
-        run: echo "Memulai proses kompilasi..."
-
-      - name: 📥 Ambil Kode
-        uses: actions/checkout@v4
-
-      - name: 📝 Simpan Data Proyek
-        id: vars
-        run: |
-          echo "ID_PROYEK=${{ github.event.inputs.id_proyek }}" >> $GITHUB_OUTPUT
-          echo "VERSI=${{ github.event.inputs.versi }}" >> $GITHUB_OUTPUT
-
-      - name: 🔧 Setup Arduino CLI
-        uses: arduino/setup-arduino-cli@v1
-        with:
-          version: latest
-
-      - name: 📦 Install Board ESP32
-        run: |
-          arduino-cli config init --overwrite
-          arduino-cli config set board_manager.additional_urls https://dl.espressif.com/dl/package_esp32_index.json
-          arduino-cli core update-index
-          arduino-cli core install esp32:esp32
-
-      - name: 📚 Install Library yang Dibutuhkan
-        run: |
-          arduino-cli lib install "WiFi"
-          arduino-cli lib install "HTTPClient"
-          arduino-cli lib install "ArduinoJson"
-          arduino-cli lib install "LiquidCrystal I2C"
-          arduino-cli lib install "UniversalTelegramBot"
-          arduino-cli lib install "ArduinoOTA"
-
       - name: 🔨 Kompile Firmware
         run: |
-          # Hapus file duplikat jika ada
           rm -f Yoefie_Family_Switch.ino
-          # Kompile file utama
           arduino-cli compile --fqbn esp32:esp32:esp32 esp32-firmware-builder.ino --output-dir ./build
 
       - name: 📤 Upload .bin ke Hosting via FTP
-        uses: sebastianpopp/ftp-action@releases/v5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.FTP_HOST }}
+          server: ${{ secrets.FTP_HOST }}
           port: 21
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          localDir: build/
-          remoteDir: /public_html/smart/firmware/
-          force: true
+          local-dir: build/
+          server-dir: /public_html/firmware/
 
       - name: ✅ Selesai
         run: |
-          echo "✅ Firmware berhasil dikompile & diupload!"
-          echo "📁 File tersedia di: https://smart.yoefiefamily.biz.id/smart/firmware/"
+          echo "✅ Berhasil! File tersedia di: https://smart.yoefiefamily.biz.id/firmware/"
