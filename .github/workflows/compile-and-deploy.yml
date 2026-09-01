@@ -1,3 +1,47 @@
+name: Kompile & Upload ke Hosting
+
+on:
+  workflow_dispatch:
+    inputs:
+      id_proyek:
+        description: 'ID Proyek'
+        required: true
+        default: '001'
+      versi:
+        description: 'Versi Firmware'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Kompile & Upload ke Hosting
+    
+    steps:
+      - name: 📥 Ambil Kode
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v1
+        with:
+          version: latest
+
+      - name: 📦 Install Board ESP32
+        run: |
+          arduino-cli config init --overwrite
+          arduino-cli config set board_manager.additional_urls https://dl.espressif.com/dl/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32
+
+      - name: 📚 Install Library yang Dibutuhkan
+        run: |
+          arduino-cli lib install "WiFi"
+          arduino-cli lib install "HTTPClient"
+          arduino-cli lib install "ArduinoJson"
+          arduino-cli lib install "LiquidCrystal I2C"
+          arduino-cli lib install "UniversalTelegramBot"
+          arduino-cli lib install "ArduinoOTA"
+
       - name: 🔨 Kompile Firmware
         run: |
           rm -f Yoefie_Family_Switch.ino
@@ -15,4 +59,4 @@
 
       - name: ✅ Selesai
         run: |
-          echo "✅ Berhasil! File tersedia di: https://smart.yoefiefamily.biz.id/firmware/"
+          echo "✅ Berhasil! File tersedia di: https://smart.yoefiefamily.biz.id/smart/firmware/"
