@@ -57,4 +57,4 @@ jobs:
       - name: ✅ Selesai
         run: |
           echo "✅ Firmware berhasil dikompile & diupload ke hosting!"
-          echo "📂 Nama file: Yoefie_Family_Switch_v${{ steps.data.outputs.VERSI }}_id${{ steps.data.outputs.ID_PROYEK }}.bin"
+          echo "📂 Nama file: esp32-firmware-builder_v${{ steps.data.outputs.VERSI }}_id${{ steps.data.outputs.ID_PROYEK }}.bin"
