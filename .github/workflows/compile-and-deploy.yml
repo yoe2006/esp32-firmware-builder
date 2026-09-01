@@ -40,7 +40,7 @@ jobs:
       - name: 🔨 Kompile Firmware
         run: |
   
-          arduino-cli compile --fqbn esp32:esp32:esp32 Yoefie_Family_Switch.ino --output-dir ./build
+          arduino-cli compile --fqbn esp32:esp32:esp32 esp32-firmware-builder.ino --output-dir ./build
 
       - name: 📤 Upload .bin ke Hosting Website
         uses: appleboy/scp-action@v0.1.7
@@ -49,9 +49,9 @@ jobs:
           port: 21
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          source: "build/Yoefie_Family_Switch.ino.bin"
+          source: "build/esp32-firmware-builder.ino.bin"
           target: "/home/sites/18a/1/1a9a52a59e/public_html/smart/firmware/"
-          rename: "Yoefie_Family_Switch_v${{ steps.data.outputs.VERSI }}_id${{ steps.data.outputs.ID_PROYEK }}.bin"
+          rename: "esp32-firmware-builder_v${{ steps.data.outputs.VERSI }}_id${{ steps.data.outputs.ID_PROYEK }}.bin"
           overwrite: true
 
       - name: ✅ Selesai
