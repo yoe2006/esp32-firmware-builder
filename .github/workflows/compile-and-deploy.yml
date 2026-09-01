@@ -39,7 +39,7 @@ jobs:
 
       - name: 🔨 Kompile Firmware
         run: |
-          cd esp32-firmware
+  
           arduino-cli compile --fqbn esp32:esp32:esp32 Yoefie_Family_Switch.ino --output-dir ./build
 
       - name: 📤 Upload .bin ke Hosting Website
@@ -49,7 +49,7 @@ jobs:
           port: 21
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          source: "esp32-firmware/build/Yoefie_Family_Switch.ino.bin"
+          source: "build/Yoefie_Family_Switch.ino.bin"
           target: "/home/sites/18a/1/1a9a52a59e/public_html/smart/firmware/"
           rename: "Yoefie_Family_Switch_v${{ steps.data.outputs.VERSI }}_id${{ steps.data.outputs.ID_PROYEK }}.bin"
           overwrite: true
